@@ -23,11 +23,9 @@ class EngineServer():
 
     def listen(self):
         while True:
-            data, addr = self.sock.recvfrom(4)
-            addr, speed, direction = unpack('HBB', data)
-            print "received message: addr - ", addr,
-            print ", speed - ", speed,
-            print ", dir - ", direction
+            data, addr = self.sock.recvfrom(6)
+            cmd, addr, speed, direction = unpack('BHBB', data)
+            print "Received {0} command for addr {1}".format(cmd, addr)
             self.engine.send(data)
 
 
