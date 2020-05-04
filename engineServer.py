@@ -2,7 +2,7 @@ import socket
 import sys
 import getopt
 from engine import Engine
-from struct import unpack
+from struct import unpack_from
 
 
 class EngineServer():
@@ -24,7 +24,7 @@ class EngineServer():
     def listen(self):
         while True:
             data, addr = self.sock.recvfrom(6)
-            cmd, addr, speed, direction = unpack('BHBB', data)
+            cmd, addr = unpack_from('BH', data)
             print "Received {0} command for addr {1}".format(cmd, addr)
             self.engine.send(data)
 

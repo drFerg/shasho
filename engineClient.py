@@ -3,7 +3,7 @@ from struct import pack
 
 CMD_ADDR = 0
 CMD_SPEED = 1
-
+CMD_POINT = 2
 
 class EngineClient():
     """docstring for EngineClient"""
@@ -14,12 +14,17 @@ class EngineClient():
                                   socket.SOCK_DGRAM)  # UDP
 
     def setAddr(self, addr, newAddr):
-      self.sock.sendto(pack('BHH', CMD_ADDR, addr, newAddr))
+      self.sock.sendto(pack('HHH', CMD_ADDR, addr, newAddr),
+                      (self.addr, self.port))
 
     def setSpeed(self, addr, speed, direction):
-        self.sock.sendto(pack('BHBB', CMD_SPEED, addr, speed, direction),
+        self.sock.sendto(pack('HHBB', CMD_SPEED, addr, speed, direction),
                          (self.addr, self.port))
 
     def setDirection(self, addr, direction):
-        self.sock.sendto(pack('BHBB', CMD_SPEED, addr, 0, direction),
+        self.sock.sendto(pack('HHBB', CMD_SPEED, addr, 0, direction),
+                         (self.addr, self.port))
+
+    def switchPoint(self, point):
+        self.sock.sendto(pack('HH', CMD_POINT, point),
                          (self.addr, self.port))
